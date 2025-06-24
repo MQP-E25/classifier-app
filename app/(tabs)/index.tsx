@@ -1,14 +1,53 @@
 import { StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { useRouter } from 'expo-router';
 
 import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
+import StyledCard from '@/components/StyledCard';
+import CsvUpload from '@/components/CsvUpload';
 
 export default function TabOneScreen() {
+  const [resultData, setResultData] = useState<any>(null);
+  const router = useRouter();
+
+  const handleFileSelected = async (fileContent: string) => {
+    try {
+      const csvBlob = new Blob([fileContent], { type: 'text/csv' });
+      const formData = new FormData();
+      formData.append('csv', csvBlob, 'upload.csv');
+
+      //fetch response
+      const response = await fetch( 'http://127.0.0.1:3000/analyzeCSV', {
+        method: 'POST',
+        body: formData,
+      });
+
+      console.log('Raw response: ', response);
+
+      if(!response.ok) {
+        const text = await response.text();
+        throw new Error(`Server error: ${response.status} - ${text}`);
+      }
+
+      const result = await response.json();
+      setResultData(result);
+
+      router.push({
+        pathname: "/two",
+        params: { fileData: JSON.stringify(result) }
+      });
+    } catch (err) {
+      console.error('Error sending CSV: ', err);
+    }
+  };
+  
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
+      <StyledCard cardTitle="Classifier" cardContent="Upload CSV to identify species.">
+        <CsvUpload onFileSelected={handleFileSelected}/>
+      </StyledCard>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
     </View>
   );
 }
@@ -20,12 +59,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 25,
   },
   separator: {
-    marginVertical: 30,
+    marginTop: 10,
+    marginBottom: 20,
     height: 1,
     width: '80%',
+  },
+  body: {
+    fontSize: 15,
+    marginBottom: 20,
   },
 });
