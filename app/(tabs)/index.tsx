@@ -2,8 +2,7 @@ import { StyleSheet } from 'react-native';
 import React, { useState } from 'react';
 import { useRouter } from 'expo-router';
 
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
+import { View } from '@/components/Themed';
 import StyledCard from '@/components/StyledCard';
 import CsvUpload from '@/components/CsvUpload';
 
@@ -16,6 +15,10 @@ export default function TabOneScreen() {
       const csvBlob = new Blob([fileContent], { type: 'text/csv' });
       const formData = new FormData();
       formData.append('csv', csvBlob, 'upload.csv');
+
+      console.log("RAW fileContent", fileContent);
+      console.log("RAW csvBlob", csvBlob);
+      console.log("RAW formData", formData);
 
       //fetch response
       const response = await fetch( 'http://127.0.0.1:3000/analyzeCSV', {
@@ -34,8 +37,8 @@ export default function TabOneScreen() {
       setResultData(result);
 
       router.push({
-        pathname: "/two",
-        params: { fileData: JSON.stringify(result) }
+        pathname: "./result",
+        params: { fileData: JSON.stringify(result) },
       });
     } catch (err) {
       console.error('Error sending CSV: ', err);
