@@ -6,12 +6,16 @@ import ResultCard from '@/components/ResultCard'
 
 export default function ResultScreen() {
   const { fileData } = useLocalSearchParams();
-  console.log("Raw fileData:", fileData);
-
-  const fileDataString = (fileData as string).substring(1, (fileData as string).length - 1);
-  console.log("fileDataString: ",fileDataString);
-  const fileDataObject = JSON.parse(fileDataString);
-
+  var fileDataObject;
+  //parse fileData
+  try{
+    const fileDataString = (fileData as string).substring(1, (fileData as string).length - 1);
+    console.log("fileDataString: ",fileDataString);
+    fileDataObject = JSON.parse(fileDataString);
+  } catch (err) {
+    console.error(err);
+  }
+  
   let imagePath = ""
   switch (fileDataObject.label) {
     case "Raja_clavata": 
@@ -27,7 +31,6 @@ export default function ResultScreen() {
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
         <Text style={styles.body}>Confidence: { fileDataObject.confidence }% </Text>
         <Text style={styles.body}>Scientific Name: { fileDataObject.label } </Text>
-        <Text style={styles.body}>Sample Size?: { fileDataObject.sample } </Text>
       </ResultCard>
     </View>
   );

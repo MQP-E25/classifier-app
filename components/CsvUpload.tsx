@@ -23,6 +23,7 @@ const CsvUpload: React.FC<CsvUploadProps> = ({ onFileSelected }) => {
                     fileContent = await response.text();
                 } else {
                     fileContent = await FileSystem.readAsStringAsync(fileUri);
+                    console.log("FILE URI: ", (fileUri));
                 }
                 onFileSelected(fileContent);
             } else {
