@@ -1,8 +1,9 @@
 import React from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Link, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
+import { Pressable, Platform } from 'react-native';
 import { SQLiteProvider, SQLiteDatabase } from 'expo-sqlite';
+
 
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
@@ -18,12 +19,16 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-
+  
   const createDBIfDNE = async (db: SQLiteDatabase) => {
-    console.log("Create DB if needed");
-    await db.execAsync( 
-      "CREATE TABLE IF NOT EXISTS history (id INTEGER PRIMARY KEY AUTOINCREMENT, scientific_name TEXT, confidence_level TEXT, date_identified TEXT);"
-    );
+   if(Platform.OS != "web") {
+      console.log("Create DB if needed");
+      await db.execAsync( 
+        "CREATE TABLE IF NOT EXISTS history (id INTEGER PRIMARY KEY AUTOINCREMENT, scientific_name TEXT, confidence_level TEXT, date_identified TEXT);"
+      );
+    } else {
+      console.log("History feature not enabled for webapp.")
+    }
   };
 
   return (

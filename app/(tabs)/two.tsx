@@ -6,16 +6,18 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { Text, View } from '@/components/Themed';
 import HistoryCard from '@/components/HistoryCard'
 
-
 type ResultType = { id: number; scientific_name: string; confidence_level: string; date_identified: string };
 export default function TabTwoScreen() {
   const [data, setData] = useState<ResultType[]>([]);
 
   const database = useSQLiteContext();
+  const [isLoading, setIsLoading] = useState(true);
 
   const loadData = async () => {
     const result = await database.getAllAsync<ResultType>("SELECT * FROM history;");
+    console.log("Loaded history:", result); 
     setData(result);
+    setIsLoading(false);
   };
 
   useFocusEffect(
@@ -24,11 +26,22 @@ export default function TabTwoScreen() {
     }, [])
   );
 
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <Text>
+          Loading History Entries...
+        </Text>
+      </View>
+    )
+  }
+
   return (
     <View style={styles.container}>
       <View>
         <FlatList 
           data={data}
+          keyExtractor={item => item.id.toString()}
           renderItem={ ({ item }) => {
             return (
               <HistoryCard>
@@ -38,6 +51,8 @@ export default function TabTwoScreen() {
               </HistoryCard>
             );
           }}
+          style={{ width: '100%' }} // Optional: ensure it fills the parent
+          contentContainerStyle={{ alignItems: 'center' }} // Optional: center items
         />
       </View>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />

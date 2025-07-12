@@ -15,6 +15,5 @@ config.server.enhanceMiddleware = (middleware) => {
     middleware(req, res, next);
   };
 };
- 
 
 module.exports = config;
