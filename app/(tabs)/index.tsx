@@ -13,10 +13,13 @@ const REMOTE_SERVER = 'http://127.0.0.1:2000/analyzeCSV';
 export default function TabOneScreen() {
   const [resultData, setResultData] = useState<any>(null);
   const router = useRouter();
-
-  const handleSubmitResult = async (name : string, confidence_level : string, date_identified : string) => {
+  const db = Platform.OS === 'web' ? null : useSQLiteContext();
+  const database = db;
+  
+ 
+  async function handleSubmitResult (name : string, confidence_level : string, date_identified : string) {
+    if (!database) {return;}
     try {
-      const database = useSQLiteContext();
       await database.runAsync("INSERT INTO history (scientific_name, confidence_level, date_identified) VALUES (?, ?, ?);", [
         name,
         confidence_level,

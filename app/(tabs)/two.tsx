@@ -10,9 +10,11 @@ type ResultType = { id: number; scientific_name: string; confidence_level: strin
 export default function TabTwoScreen() {
   const [data, setData] = useState<ResultType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const db = Platform.OS === 'web' ? null : useSQLiteContext();
+  const database = db;
 
   const loadData = async () => {
-      const database = useSQLiteContext(); 
+      if (!database ){return;}
       const result = await database.getAllAsync<ResultType>("SELECT * FROM history;");
       console.log("Loaded history:", result); 
       setData(result);
