@@ -1,4 +1,4 @@
-import { StyleSheet, FlatList } from 'react-native';
+import { StyleSheet, FlatList, Platform } from 'react-native';
 import { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { useSQLiteContext } from 'expo-sqlite';
@@ -9,22 +9,33 @@ import HistoryCard from '@/components/HistoryCard'
 type ResultType = { id: number; scientific_name: string; confidence_level: string; date_identified: string };
 export default function TabTwoScreen() {
   const [data, setData] = useState<ResultType[]>([]);
-
-  const database = useSQLiteContext();
   const [isLoading, setIsLoading] = useState(true);
 
   const loadData = async () => {
-    const result = await database.getAllAsync<ResultType>("SELECT * FROM history;");
-    console.log("Loaded history:", result); 
-    setData(result);
-    setIsLoading(false);
+      const database = useSQLiteContext(); 
+      const result = await database.getAllAsync<ResultType>("SELECT * FROM history;");
+      console.log("Loaded history:", result); 
+      setData(result);
+      setIsLoading(false);
   };
 
   useFocusEffect(
     useCallback (() => {
-      loadData();
+      if(Platform.OS != 'web'){
+        loadData();
+      }
     }, [])
   );
+
+  if (Platform.OS == 'web') {
+    return (
+      <View style= { styles.container} >
+        <Text>
+          History is not currently available through the web.
+        </Text>
+      </View>
+    )
+  }
 
   if (isLoading) {
     return (
@@ -51,8 +62,8 @@ export default function TabTwoScreen() {
               </HistoryCard>
             );
           }}
-          style={{ width: '100%' }} // Optional: ensure it fills the parent
-          contentContainerStyle={{ alignItems: 'center' }} // Optional: center items
+          style={{ width: '100%' }}
+          contentContainerStyle={{ alignItems: 'center' }}
         />
       </View>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
