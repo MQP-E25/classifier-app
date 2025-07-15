@@ -1,5 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
+import { useSQLiteContext } from 'expo-sqlite';
 
 import { Text, View } from '@/components/Themed';
 import ResultCard from '@/components/ResultCard'
@@ -7,6 +8,31 @@ import ResultCard from '@/components/ResultCard'
 export default function ResultScreen() {
   const { fileData } = useLocalSearchParams();
   var fileDataObject;
+  const db = Platform.OS === 'web' ? null : useSQLiteContext();
+  const database = db;
+
+  async function handleSubmitResult (name : string, confidence_level : string, date_identified : string) {
+    if (!database) {return;}
+    try {
+      await database.runAsync("INSERT INTO history (scientific_name, confidence_level, date_identified) VALUES (?, ?, ?);", [
+        name,
+        confidence_level,
+        date_identified
+      ]);
+      console.log("Successfully inserted into db.")
+    } catch (err) {
+      console.error(err);
+    }    
+  }
+
+  async function executeSubmission( fileDataObject : any ) {
+    await handleSubmitResult(
+      fileDataObject.label || fileDataObject.scientific_name,
+      fileDataObject.confidence || fileDataObject.confidence_level,
+      new Date().toISOString()
+    );
+  }
+
   //parse fileData
   try{
     const fileDataString = (fileData as string).substring(1, (fileData as string).length - 1);
@@ -16,6 +42,8 @@ export default function ResultScreen() {
     console.error(err);
   }
   
+  executeSubmission(fileDataObject);
+  
   let imagePath = ""
   switch (fileDataObject.label) {
     case "Raja_clavata": 
@@ -24,7 +52,7 @@ export default function ResultScreen() {
     default: 
       imagePath = "https://picsum.photos/700" 
   }
-
+  
   return (
     <View style={styles.container}>
       <ResultCard cardTitle="Classification Results: " imagePath={ imagePath }>

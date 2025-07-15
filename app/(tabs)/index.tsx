@@ -13,23 +13,6 @@ const REMOTE_SERVER = 'http://127.0.0.1:2000/analyzeCSV';
 export default function TabOneScreen() {
   const [resultData, setResultData] = useState<any>(null);
   const router = useRouter();
-  const db = Platform.OS === 'web' ? null : useSQLiteContext();
-  const database = db;
-  
- 
-  async function handleSubmitResult (name : string, confidence_level : string, date_identified : string) {
-    if (!database) {return;}
-    try {
-      await database.runAsync("INSERT INTO history (scientific_name, confidence_level, date_identified) VALUES (?, ?, ?);", [
-        name,
-        confidence_level,
-        date_identified
-      ]);
-      console.log("Successfully inserted into db.")
-    } catch (err) {
-      console.error(err);
-    }    
-  }
 
   const handleFileSelected = async ( fileContent: string ) => {
   try {
@@ -63,14 +46,6 @@ export default function TabOneScreen() {
     setResultData(result);
     console.log(result);
     console.log("result_label: ",result.scientific_name);
-
-    if (Platform.OS != 'web') {
-      await handleSubmitResult(
-        result.label || result.scientific_name,
-        result.confidence || result.confidence_level,
-        new Date().toISOString()
-      );
-    }
 
     router.push({
       pathname: './result',
