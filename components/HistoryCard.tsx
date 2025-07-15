@@ -1,11 +1,8 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import { Avatar, Card, Text} from 'react-native-paper'
+import { Card } from 'react-native-paper'
 
 import { View } from '@/components/Themed';
-
-const LeftContent = (props: any) => <Avatar.Icon {...props} icon="icons" />
-
 
 const HistoryCard = ({ children }: any) => (  
   <Card>
