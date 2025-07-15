@@ -54,10 +54,11 @@ export default function TabTwoScreen() {
       <View>
         <FlatList 
           data={data}
+          numColumns={ 2 }
           keyExtractor={item => item.id.toString()}
           renderItem={ ({ item }) => {
             return (
-              <HistoryCard>
+              <HistoryCard style={styles.card}>
                 <Text>{ item.scientific_name }</Text>
                 <Text>{ item.confidence_level }</Text>
                 <Text>{ item.date_identified }</Text>
@@ -92,5 +93,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'light',
     marginTop: 10,
+  },
+  card: {
+    margin: 50,
+    width: 100,
   }
 });

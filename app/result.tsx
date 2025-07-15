@@ -32,8 +32,15 @@ export default function ResultScreen() {
       new Date().toISOString()
     );
   }
-
   //parse fileData
+  if (!fileData || typeof fileData !== 'string') {
+    console.error('fileData is undefined or not a string');
+    return (
+      <View style={styles.container}>
+        <Text>Error: No data received</Text>
+      </View>
+    );
+  }
   try{
     const fileDataString = (fileData as string).substring(1, (fileData as string).length - 1);
     console.log("fileDataString: ",fileDataString);

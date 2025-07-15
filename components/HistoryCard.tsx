@@ -5,8 +5,9 @@ import { Card } from 'react-native-paper'
 import { View } from '@/components/Themed';
 
 const HistoryCard = ({ children }: any) => (  
-  <Card>
+  <Card style={styles.container}>
     <Card.Content>
+      <View/>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
     </Card.Content>
     <Card.Content>
@@ -17,9 +18,9 @@ const HistoryCard = ({ children }: any) => (
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    margin: 5,
+    width: '47%',
     alignItems: 'center',
-    justifyContent: 'center',
   },
   title: {
     fontSize: 25,
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 20,
     height: 1,
-    width: '80%',
+    width: 50,
   },
   body: {
     fontSize: 15,
