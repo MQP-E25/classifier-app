@@ -2,14 +2,8 @@ import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { Card } from 'react-native-paper'
 
-import { View } from '@/components/Themed';
-
 const HistoryCard = ({ children }: any) => (  
   <Card style={styles.container}>
-    <Card.Content>
-      <View/>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-    </Card.Content>
     <Card.Content>
         {children}
     </Card.Content>
@@ -19,8 +13,9 @@ const HistoryCard = ({ children }: any) => (
 const styles = StyleSheet.create({
   container: {
     margin: 5,
-    width: '47%',
+    width: 180,
     alignItems: 'center',
+    backgroundColor: 'beige',
   },
   title: {
     fontSize: 25,

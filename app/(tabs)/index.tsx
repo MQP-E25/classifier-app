@@ -7,7 +7,7 @@ import { View } from '@/components/Themed';
 import StyledCard from '@/components/StyledCard';
 import CsvUpload from '@/components/CsvUpload';
 
-const REMOTE_SERVER = 'http://10.218.63.182:2000/analyzeCSV';
+const REMOTE_SERVER = 'http://10.0.0.210:3000/analyzeNotebook';
 
 export default function TabOneScreen() {
   const [resultData, setResultData] = useState<any>(null);
@@ -43,7 +43,6 @@ export default function TabOneScreen() {
 
     const result = await response.json();
     setResultData(result);
-    console.log(result);
     console.log("result_label: ",result.scientific_name);
 
     router.push({
