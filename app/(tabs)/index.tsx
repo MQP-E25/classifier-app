@@ -1,14 +1,13 @@
 import { StyleSheet, Platform } from 'react-native';
 import React, { useState } from 'react';
-import { useRouter } from 'expo-router';
-import { useSQLiteContext } from 'expo-sqlite';
+import { useRouter } from 'expo-router';  
 import * as FileSystem from 'expo-file-system';
 
 import { View } from '@/components/Themed';
 import StyledCard from '@/components/StyledCard';
 import CsvUpload from '@/components/CsvUpload';
 
-const REMOTE_SERVER = 'http://127.0.0.1:2000/analyzeCSV';
+const REMOTE_SERVER = 'http://130.215.43.73/analyzeNotebook';
 
 export default function TabOneScreen() {
   const [resultData, setResultData] = useState<any>(null);
@@ -44,7 +43,6 @@ export default function TabOneScreen() {
 
     const result = await response.json();
     setResultData(result);
-    console.log(result);
     console.log("result_label: ",result.scientific_name);
 
     router.push({
