@@ -7,7 +7,7 @@ import { View } from '@/components/Themed';
 import StyledCard from '@/components/StyledCard';
 import CsvUpload from '@/components/CsvUpload';
 
-const REMOTE_SERVER = 'http://130.215.43.73/analyzeNotebook';
+const REMOTE_SERVER = 'https://130.215.43.73/analyzeNotebook';
 
 export default function TabOneScreen() {
   const [resultData, setResultData] = useState<any>(null);
