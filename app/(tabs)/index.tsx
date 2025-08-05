@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet, Platform, Alert } from 'react-native';
 import React, { useState } from 'react';
 import { useRouter } from 'expo-router';  
 import * as FileSystem from 'expo-file-system';
@@ -43,7 +43,6 @@ export default function TabOneScreen() {
 
     const result = await response.json();
     setResultData(result);
-    console.log("result_label: ",result.scientific_name);
 
     router.push({
       pathname: './result',
@@ -51,7 +50,7 @@ export default function TabOneScreen() {
     });
 
   } catch (err) {
-    console.error('Error sending CSV:', err);
+    Alert.alert(`Error sending CSV: ${err}`);
   }
 };
   

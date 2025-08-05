@@ -1,22 +1,41 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import { Avatar, Card, Text} from 'react-native-paper'
+import { Card, Text } from 'react-native-paper'
 
 import { View } from '@/components/Themed';
 
-const LeftContent = (props: any) => <Avatar.Icon {...props} icon="icons" />
+function fetchImage(scientific_name : string) {
+   let imagePath = ""
 
+  switch (scientific_name) {
+    case "Sphyrna_mokarran":
+      imagePath = "https://upload.wikimedia.org/wikipedia/commons/b/bd/Great_hammerhead2.jpg"
+      break;
+    case "Raja_clavata": 
+      imagePath = "https://i.imgur.com/XjMxHS6.jpeg";
+      break;
+    case "Rhizoprionodon_acutus":
+      imagePath = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Rhizoprionodon_acutus_mangalore2.jpg/250px-Rhizoprionodon_acutus_mangalore2.jpg"
+      break;
+    default: 
+      imagePath = "https://picsum.photos/700" 
+  }
 
-const ResultCard = ({ children, cardTitle, cardContent, imagePath }: any) => (  
-  <Card>
+  return imagePath;
+}
+
+const ResultCard = ({ cardTitle, index, confidence, scientific_name }: any) => (  
+  <Card style={styles.container}>
     <Card.Content>
       <Text variant="titleLarge">{cardTitle}</Text>
-      <Text variant="bodyMedium">{cardContent}</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
     </Card.Content>
-    <Card.Cover source={{uri: imagePath}} />
+    <Card.Cover source={{uri: fetchImage(scientific_name)}} />
+    <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
     <Card.Content>
-        {children}
+        <Text variant="bodySmall">Index: {index}</Text>
+        <Text variant='bodyMedium'>Species Name: {scientific_name.replace("_", " ")}</Text>
+        <Text variant="bodyMedium">Confidence Level: {confidence}%</Text>
     </Card.Content>
   </Card>
 );
@@ -24,15 +43,16 @@ const ResultCard = ({ children, cardTitle, cardContent, imagePath }: any) => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    maxWidth: 255,
+    overflow: 'hidden',
+    margin: 4,
   },
   title: {
     fontSize: 25,
   },
   separator: {
     marginTop: 10,
-    marginBottom: 20,
+    marginBottom: 10,
     height: 1,
     width: '80%',
   },

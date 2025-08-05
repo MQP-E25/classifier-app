@@ -1,21 +1,18 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import { Avatar, Button, Card, Text} from 'react-native-paper'
+import { Card, Text} from 'react-native-paper'
 
 import { View } from '@/components/Themed';
 
-const LeftContent = (props: any) => <Avatar.Icon {...props} icon="icons" />
-
 const StyledCard = ({ children, cardTitle, cardContent }: any) => (
-  <Card>
+  <Card style={styles.container}>
     <Card.Content>
-      <Text variant="titleLarge">{cardTitle}</Text>
-      <Text variant="bodyMedium">{cardContent}</Text>
+      <Text style= {styles.text} variant="titleLarge">{cardTitle}</Text>
+      <Text style={styles.text} variant="bodyMedium">{cardContent}</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
     </Card.Content>
     <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
     <Card.Actions>
-      <Button>Upload Image</Button>
       {children}
     </Card.Actions>
   </Card>
@@ -23,12 +20,10 @@ const StyledCard = ({ children, cardTitle, cardContent }: any) => (
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 25,
+    alignContent: 'center',
+    width: 255,
+    backgroundColor: '#EEF7EE',
   },
   separator: {
     marginTop: 10,
@@ -36,9 +31,8 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
-  body: {
-    fontSize: 15,
-    marginBottom: 20,
+  text: {
+    color: '#448D44',
   },
 });
 

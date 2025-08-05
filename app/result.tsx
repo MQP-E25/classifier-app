@@ -1,4 +1,4 @@
-import { StyleSheet, Platform, FlatList } from 'react-native';
+import { StyleSheet, Platform, FlatList, Dimensions } from 'react-native';
 import { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { useLocalSearchParams } from 'expo-router';
@@ -10,14 +10,20 @@ import ResultCard from '@/components/ResultCard'
 interface ClassificationResults {
     confidence: number,
     prediction: string,
-    top_5: any
+    top_5: ClassificationResults[],
   }
 
 export default function ResultScreen() {
   const [data, setData] = useState<ClassificationResults[]>([])
   const { fileData } = useLocalSearchParams();
   const db = Platform.OS === 'web' ? null : useSQLiteContext();
+  const windowWidth = Dimensions.get('window').width;
   const database = db;
+  let column_count = 2;
+
+  if (windowWidth > 200) {
+    column_count = 5;
+  }
 
   async function handleSubmitResult (name : string, confidence_level : string, date_identified : string) {
     if (!database) {return;}
@@ -52,9 +58,7 @@ export default function ResultScreen() {
   }
 
   const fileDataString = (fileData as string);
-  console.log("fileDataString: ",fileDataString);
   const fileDataObject = JSON.parse(fileDataString);
-  console.log("fileDataObject: ", fileDataObject);
 
   // Convert the object with numeric keys to an array of ClassificationResults
   const resultArray: ClassificationResults[] = Object.values(fileDataObject).filter(item => 
@@ -66,21 +70,6 @@ useFocusEffect(
       setData(resultArray);
     }, [])
   );
-  
-  let imagePath = ""
-  // Get the first prediction for image selection
-  const firstResult = resultArray[0];
-  if (firstResult) {
-    switch (firstResult.prediction) {
-      case "Raja_clavata": 
-        imagePath = "https://i.imgur.com/XjMxHS6.jpeg";
-        break;
-      default: 
-        imagePath = "https://picsum.photos/700" 
-    }
-  } else {
-    imagePath = "https://picsum.photos/700";
-  }
 
   for (const result of resultArray) { 
       executeSubmission(result);
@@ -90,15 +79,11 @@ useFocusEffect(
     <View style={styles.container}>
       <FlatList
         data={data}
-        numColumns={2}
-        keyExtractor={ (item, index) => index.toString() }
+        numColumns={ column_count }
+        keyExtractor={ ( item, index ) => item.prediction + index.toString() }
         renderItem={ ({ item, index }) => {
           return(
-            <ResultCard cardTitle="Classification Results: " imagePath={ imagePath }>
-              <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-              <Text style={styles.body}>Index: {index + 1}</Text>
-              <Text style={styles.body}>Confidence: { (item.confidence * 100).toFixed(2) }% </Text>
-              <Text style={styles.body}>Scientific Name: { item.prediction } </Text>
+            <ResultCard cardTitle="Classification Results: " scientific_name={ item.prediction } index={index+1} confidence={(item.confidence * 100).toFixed(2)}>
             </ResultCard>
           )
         } }
