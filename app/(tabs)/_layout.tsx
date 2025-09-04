@@ -30,7 +30,7 @@ export default function TabLayout() {
           title: 'Home',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerRight: () => (
-            <Link href="/modal" asChild>
+            <Link href="/about" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <FontAwesome
@@ -46,7 +46,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="history"
         options={{
           title: 'History',
           tabBarIcon: ({ color }) => <TabBarIcon name="calendar" color={color} />,

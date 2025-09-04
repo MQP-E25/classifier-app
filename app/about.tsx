@@ -6,8 +6,13 @@ import { Text, View } from '@/components/Themed';
 export default function ModalScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Project Information:</Text>
-      <Text style={styles.info}>Project description goes here</Text>
+      <Text style={styles.title}>About the Project:</Text>
+      <Text style={styles.info}>
+        Species identifier using melting curve analysis developed by Xavier Bonavita, Victor Che, and Remy Jiang 
+        submitted to the Faculty of Worcester Polytechnic Institute in partial fulfillment 
+        of the requirements for the Degree of Bachelor of Science in Computer Science. 
+      </Text>
+      <Text style={styles.info}>Read the resulting report: </Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       
       {/* Use a light status bar on iOS to account for the black space above the modal */}
@@ -29,6 +34,9 @@ const styles = StyleSheet.create({
   info: {
     marginTop: 15,
     fontSize: 15,
+    textOverflow: 'wrap',
+    alignContent: 'center',
+    textAlign: 'center',
     fontWeight: 'light',
   },
   separator: {
