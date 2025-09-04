@@ -6,3 +6,9 @@
 - Runs identification on a remote server.
 - Returns all identification results on a result screen.
 - A very prototype history screen on native platforms.
+## Run application:
+For local devices:
+`npm start`
+To export and prepare application for deployment.
+`npm predeploy`
+`npm deploy`
