@@ -9,7 +9,7 @@ export default function ModalScreen() {
       <Text style={styles.title}>About the Project:</Text>
       <Text style={styles.info}>
         Species identifier using melting curve analysis developed by Xavier Bonavita, Victor Che, and Remy Jiang 
-        submitted to the Faculty of Worcester Polytechnic Institute in partial fulfillment 
+        under advisory from Professor Kyumin Lee and submitted to the Faculty of Worcester Polytechnic Institute in partial fulfillment 
         of the requirements for the Degree of Bachelor of Science in Computer Science. 
       </Text>
       <Text style={styles.info}>Read the resulting report: </Text>
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   title: {
     fontSize: 20,
@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
   },
   info: {
     marginTop: 15,
+    width: '80%',
     fontSize: 15,
     textOverflow: 'wrap',
     alignContent: 'center',
